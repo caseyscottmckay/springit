@@ -1,0 +1,43 @@
+package com.springit.springit_backend.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.time.Instant;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.SEQUENCE;
+
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Community {
+
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
+
+  @NotBlank(message = "Community name is required")
+  private String name;
+
+  @NotBlank(message = "Description is required")
+  private String description;
+
+  @OneToMany(fetch = LAZY)
+  private List<Post> posts;
+
+  private Instant dateCreated;
+
+  @ManyToOne(fetch = LAZY)
+  private User user;
+
+
+}
