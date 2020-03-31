@@ -11,15 +11,15 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CommunityMapper {
 
-  @Mapping(target="numberOfPosts", expression="java(mapPosts(community.getPosts()))")
+  @Mapping(target = "numberOfPosts", expression = "java(mapPosts(community.getPosts()))")
   CommunityDto mapCommunityToDto(Community community);
 
-  default Integer mapPosts(List<Post> numberOfPosts){
+  default Integer mapPosts(List<Post> numberOfPosts) {
     return numberOfPosts.size();
   }
 
   @InheritInverseConfiguration
-  @Mapping(target = "posts", ignore=true)
+  @Mapping(target = "posts", ignore = true)
   Community mapDtoToCommunity(CommunityDto community);
 
 }

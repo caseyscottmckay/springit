@@ -1,18 +1,21 @@
 package com.springit.springit_backend.model;
 
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.SEQUENCE;
+
+import java.time.Instant;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.time.Instant;
-
-import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.SEQUENCE;
-
 
 @Data
 @Entity
@@ -42,7 +45,7 @@ public class Post {
 
   private Instant dateCreated;
 
-  @ManyToOne(fetch= LAZY)
+  @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "id", referencedColumnName = "id")
   private Community community;
 

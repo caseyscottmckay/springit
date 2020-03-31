@@ -1,15 +1,18 @@
 package com.springit.springit_backend.model;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Generated;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.SEQUENCE;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +20,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity
 @Builder
 public class Vote {
-
 
   @Id
   @GeneratedValue(strategy = SEQUENCE)
@@ -27,11 +29,11 @@ public class Vote {
 
   @NotNull
   @ManyToOne(fetch = LAZY)
-  @JoinColumn(name="postId", referencedColumnName = "postId")
+  @JoinColumn(name = "postId", referencedColumnName = "postId")
   private Post post;
 
-  @ManyToOne(fetch=LAZY)
-  @JoinColumn(name="userId", referencedColumnName = "userId")
+  @ManyToOne(fetch = LAZY)
+  @JoinColumn(name = "userId", referencedColumnName = "userId")
   private User user;
 
 }

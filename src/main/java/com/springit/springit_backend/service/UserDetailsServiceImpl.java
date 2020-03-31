@@ -1,7 +1,8 @@
 package com.springit.springit_backend.service;
 
+import static java.util.Collections.singletonList;
+
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import com.springit.springit_backend.model.User;
 import com.springit.springit_backend.repository.UserRepository;
@@ -24,12 +25,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) {
     Optional<User> userOptional = userRepository.findByUsername(username);
-    User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("No user found with this username: " + username));
-    return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, getAuthorities("USER"));
+    User user = userOptional
+            .orElseThrow(() -> new UsernameNotFoundException("No user " +
+                    "Found with username : " + username));
+
+    return new org.springframework.security
+            .core.userdetails.User(user.getUsername(), user.getPassword(),
+            user.isEnabled(), true, true,
+            true, getAuthorities("USER"));
   }
 
-  private Collection<? extends GrantedAuthority> getAuthorities(String role){
-    return Collections.singletonList(new SimpleGrantedAuthority(role));
+  private Collection<? extends GrantedAuthority> getAuthorities(String role) {
+    return singletonList(new SimpleGrantedAuthority(role));
   }
 
 }

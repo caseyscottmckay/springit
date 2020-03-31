@@ -10,8 +10,13 @@ import lombok.NoArgsConstructor;
 public class PostRequest {
 
   private Long postId;
+
   private String communityName;
+
   private String postName;
+
   private String url;
+
   private String description;
+
 }

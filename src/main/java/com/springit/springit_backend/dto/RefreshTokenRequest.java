@@ -1,22 +1,17 @@
 package com.springit.springit_backend.dto;
 
-import java.time.Instant;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AuthenticationResponse {
+public class RefreshTokenRequest {
 
-  private String authenticationToken;
-
+  @NotBlank
   private String refreshToken;
-
-  private Instant expiresAt;
 
   private String username;
 

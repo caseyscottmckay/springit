@@ -1,6 +1,5 @@
 package com.springit.springit_backend.service;
 
-import static java.time.Instant.now;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
@@ -32,18 +31,16 @@ public class CommunityService {
   }
 
   @Transactional
-  public CommunityDto save(CommunityDto communityDto){
+  public CommunityDto save(CommunityDto communityDto) {
     Community community = communityRepository.save(communityMapper.mapDtoToCommunity(communityDto));
-  communityDto.setId(community.getId());
-  return communityDto;
+    communityDto.setId(community.getId());
+    return communityDto;
   }
 
   @Transactional(readOnly = true)
-  public CommunityDto getCommunity(Long id){
-    Community community = communityRepository.findById(id).orElseThrow(()->new CommunityNotFoundException("Community not found"));
+  public CommunityDto getCommunity(Long id) {
+    Community community = communityRepository.findById(id).orElseThrow(() -> new CommunityNotFoundException("Community not found"));
     return communityMapper.mapCommunityToDto(community);
   }
-
-
 
 }

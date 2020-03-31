@@ -11,8 +11,13 @@ import lombok.NoArgsConstructor;
 public class CommentsDto {
 
   private Long id;
+
   private Long postId;
+
   private Instant dateCreated;
+
   private String text;
+
   private String userName;
+
 }

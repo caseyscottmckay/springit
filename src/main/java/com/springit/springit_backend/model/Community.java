@@ -1,17 +1,20 @@
 package com.springit.springit_backend.model;
 
+import static javax.persistence.FetchType.LAZY;
+
+import java.time.Instant;
+import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.time.Instant;
-import java.util.List;
-
-import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.SEQUENCE;
 
 @Data
 @Entity
@@ -19,7 +22,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @Builder
 public class Community {
-
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -38,6 +40,5 @@ public class Community {
 
   @ManyToOne(fetch = LAZY)
   private User user;
-
 
 }

@@ -3,7 +3,6 @@ package com.springit.springit_backend.controller;
 import java.util.List;
 import javax.validation.Valid;
 import com.springit.springit_backend.dto.CommunityDto;
-import com.springit.springit_backend.model.Community;
 import com.springit.springit_backend.service.CommunityService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,17 +20,18 @@ public class CommunityController {
   private final CommunityService communityService;
 
   @GetMapping
-  public List<CommunityDto> getAllCommunities(){
+  public List<CommunityDto> getAllCommunities() {
     return communityService.getAll();
   }
 
   @GetMapping("/{id}")
-  public CommunityDto getCommunity(@PathVariable Long id){
+  public CommunityDto getCommunity(@PathVariable Long id) {
     return communityService.getCommunity(id);
   }
 
   @PostMapping
-  public CommunityDto create(@RequestBody @Valid CommunityDto communityDto){
+  public CommunityDto create(@RequestBody @Valid CommunityDto communityDto) {
     return communityService.save(communityDto);
   }
+
 }

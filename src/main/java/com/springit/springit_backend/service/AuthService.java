@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 import com.springit.springit_backend.dto.AuthenticationResponse;
 import com.springit.springit_backend.dto.LoginRequest;
+import com.springit.springit_backend.dto.RefreshTokenRequest;
 import com.springit.springit_backend.dto.RegisterRequest;
 import com.springit.springit_backend.exception.SpringitException;
 import com.springit.springit_backend.model.NotificationEmail;
@@ -14,7 +15,6 @@ import com.springit.springit_backend.repository.UserRepository;
 import com.springit.springit_backend.repository.VerificationTokenRepository;
 import com.springit.springit_backend.security.JwtProvider;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
+@Transactional
 public class AuthService {
 
   private final PasswordEncoder passwordEncoder;
@@ -41,13 +41,14 @@ public class AuthService {
 
   private final JwtProvider jwtProvider;
 
-  @Transactional
+  private final RefreshTokenService refreshTokenService;
+
   public void signup(RegisterRequest registerRequest) {
     User user = new User();
     user.setUsername(registerRequest.getUsername());
     user.setEmail(registerRequest.getEmail());
     user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-    user.setDateCreated(Instant.now());
+    user.setCreated(Instant.now());
     user.setEnabled(false);
 
     userRepository.save(user);
@@ -60,15 +61,14 @@ public class AuthService {
   }
 
   @Transactional(readOnly = true)
-  User getCurrentUser() {
+  public User getCurrentUser() {
     org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
             getContext().getAuthentication().getPrincipal();
     return userRepository.findByUsername(principal.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException("User name not found - " + principal.getUsername()));
   }
 
-  @Transactional
-  void fetchUserAndEnable(VerificationToken verificationToken) {
+  private void fetchUserAndEnable(VerificationToken verificationToken) {
     String username = verificationToken.getUser().getUsername();
     User user = userRepository.findByUsername(username).orElseThrow(() -> new SpringitException("User not found with name - " + username));
     user.setEnabled(true);
@@ -95,9 +95,23 @@ public class AuthService {
             loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authenticate);
     String token = jwtProvider.generateToken(authenticate);
-    return new AuthenticationResponse(token, loginRequest.getUsername());
+    return AuthenticationResponse.builder()
+            .authenticationToken(token)
+            .refreshToken(refreshTokenService.generateRefreshToken().getToken())
+            .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+            .username(loginRequest.getUsername())
+            .build();
+  }
+
+  public AuthenticationResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+    refreshTokenService.validateRefreshToken(refreshTokenRequest.getRefreshToken());
+    String token = jwtProvider.generateTokenWithUserName(refreshTokenRequest.getUsername());
+    return AuthenticationResponse.builder()
+            .authenticationToken(token)
+            .refreshToken(refreshTokenRequest.getRefreshToken())
+            .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+            .username(refreshTokenRequest.getUsername())
+            .build();
   }
 
 }
-
-

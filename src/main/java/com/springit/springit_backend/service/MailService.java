@@ -1,6 +1,5 @@
 package com.springit.springit_backend.service;
 
-
 import com.springit.springit_backend.exception.SpringitException;
 import com.springit.springit_backend.model.NotificationEmail;
 import lombok.AllArgsConstructor;
@@ -28,8 +27,6 @@ class MailService {
       messageHelper.setFrom("springreddit@email.com");
       messageHelper.setTo(notificationEmail.getRecipient());
       messageHelper.setSubject(notificationEmail.getSubject());
-      //Before messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()));
-// After
       messageHelper.setText(notificationEmail.getBody());
     };
     try {
