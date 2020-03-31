@@ -18,23 +18,25 @@ import org.springframework.stereotype.Service;
 class MailService {
 
   private final JavaMailSender mailSender;
+
   private final MailContentBuilder mailContentBuilder;
 
   @Async
-  void sendMail(NotificationEmail notificationEmail ){
+  void sendMail(NotificationEmail notificationEmail) {
     MimeMessagePreparator messagePreparator = mimeMessage -> {
-      MimeMessageHelper messageHelper=new MimeMessageHelper(mimeMessage);
-      messageHelper.setFrom("springit@email.com");
+      MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+      messageHelper.setFrom("springreddit@email.com");
       messageHelper.setTo(notificationEmail.getRecipient());
       messageHelper.setSubject(notificationEmail.getSubject());
-      messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()));
-
+      //Before messageHelper.setText(mailContentBuilder.build(notificationEmail.getBody()));
+// After
+      messageHelper.setText(notificationEmail.getBody());
     };
     try {
       mailSender.send(messagePreparator);
-      log.info("Activation email sent!");
-    } catch (MailException e){
-      throw new SpringitException("Exception occured when sending mail to " + notificationEmail.getRecipient()+": "+e.toString());
+      log.info("Activation email sent!!");
+    } catch (MailException e) {
+      throw new SpringitException("Exception occurred when sending mail to " + notificationEmail.getRecipient());
     }
   }
 

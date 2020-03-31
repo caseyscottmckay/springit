@@ -6,7 +6,7 @@ import com.springit.springit_backend.model.Post;
 import com.springit.springit_backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PostRepostiory extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
   List<Post> findAllByCommunity(Community community);
 

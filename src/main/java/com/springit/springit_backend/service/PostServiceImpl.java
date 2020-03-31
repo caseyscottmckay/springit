@@ -10,7 +10,7 @@ import com.springit.springit_backend.model.Community;
 import com.springit.springit_backend.model.Post;
 import com.springit.springit_backend.model.User;
 import com.springit.springit_backend.repository.CommunityRepository;
-import com.springit.springit_backend.repository.PostRepostiory;
+import com.springit.springit_backend.repository.PostRepository;
 import com.springit.springit_backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
 
   private final PostMapper postMapper;
 
-  private final PostRepostiory postRepostiory;
+  private final PostRepository postRepostiory;
 
   private final UserRepository userRepository;
 
