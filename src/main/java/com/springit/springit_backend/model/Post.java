@@ -32,7 +32,7 @@ public class Post {
   private String url;
 
   @Lob//TODO maybe this eats up to much memory and better way to do this?
-  private String descriptoin;
+  private String description;
 
   private Integer voteCount;
 
